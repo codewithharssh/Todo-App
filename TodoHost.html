@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="Todo.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> 
+        <title></title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+margin:0;  
+padding:0;
+box-sizing:border-box;
+} 
+
+body{
+background:white;   
+font-family: 'poppins', sans-serif;
+}
+
+.addTaskBtn{
+all:unset;        
+height:50px;    
+width:220px;
+background:#6D45D9;
+border-radius:30px;
+color:white;
+position:fixed;
+left:50%;
+bottom:0px;
+transform:translate(-50%,-50%);
+font-size:18px;
+font-weight:600;
+display:flex;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.addTaskBtn .fa-plus{
+font-size:13px;
+position:relative;
+left:-13px;
+margin-left:15px;
+}
+
+.wishes{
+color:#484D77;  
+margin-top:30px;
+margin-left:20px;
+font-weight:600;
+font-size:38px;
+font-weight:700;
+}
+
+.no-of-tasks{
+color:#d3d3d3;  
+font-weight:530;
+margin-left:20px;
+margin-top:10px;
+font-size:18px;
+}
+
+.no-of-tasks > span{
+color:#6D45D9; 
+}
+
+.menu-btn .fa-ellipsis{
+height:25px;
+width:25px; 
+background:#DBE7F5;
+border-radius:100%;
+color:#707592;
+position:absolute;
+top:40px;
+right:25px;
+display:flex;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+}
+
+.no-task-message{
+height:150px;        
+width:350px;
+position:absolute;
+top:53%;
+left:50%;
+transform:translate(-50%,-50%);
+}
+
+.no-task-message .fa-list-check{
+color:#6D45D9; 
+font-size:73px; 
+position:relative;
+top:30px;
+left:50%;
+transform:translate(-50%,-50%);
+}
+
+.no-task-message h4{
+color:#484D77;  
+text-align:center;  
+font-weight:600;
+font-size:19px;
+margin-top:4px;
+}
+
+.no-task-message p{
+text-align:center;  
+color:#d2d2d2;
+font-weight:600;
+margin-top:5px;
+}
+
+.allTasks{
+width:100%;   
+margin:0 auto;
+column-count:2;
+column-gap: 1em;
+padding:17px;
+}
+
+.allTasks .task{
+width:100%;        
+padding:15px;
+background:white;
+border-radius:5px;
+color:#484D77;
+display: inline-block;
+margin: 0 0 .6em;
+position:relative;
+top:3px;
+box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+font-weight:500;
+color:#707592;
+animation:fade .3s linear;
+overflow:hidden;
+box-shadow: rgba(0, 0, 0, 0.11) 0px 1px 6px, rgba(0, 0, 0, 0.14) 0px 1px 6px;
+transition:all .2s;
+user-select:none;
+}
+
+@keyframes fade {
+0%{
+transform:scale(0.6); 
+opacity:0;
+transform-origin:50% 50%;
+}
+100%{
+transform:scale(1);    
+opacity:1;
+transform-origin:50% 0%;
+}
+}
+
+.allTasks .task input[type="checkbox"]{
+-webkit-appearance:none;
+height:20px;
+width:20px;
+border:2px solid #6D45D9;
+border-radius:100%;
+}
+
+.allTasks .task  input[type="checkbox"]::after{
+content:"\f00c";
+font-family:fontAwesome;
+color:white;
+font-size:12px;
+position:absolute;
+margin-top:3px;
+margin-left:3px;
+display:none;
+}
+
+.allTasks .task .userTask{
+margin-left:28px;
+margin-top:-28px;
+}
+
+.allTasks .task input[type="checkbox"]:checked{
+background:#6D45D9;
+border-color:transparent;
+}
+
+.allTasks .task input[type="checkbox"]:checked::after{
+display:block;        
+}
+
+.checked {
+ text-decoration:line-through;
+}
+
+.add-task-input-box,.instruction-box{
+height:100%;
+width:100%;
+background:white;
+position:fixed;
+top:0;
+right:-100%;
+transition:all .3s;
+}
+
+
+.add-task-input-box-details{
+height:80px;       
+width:100%;
+background:white;
+display:flex;
+align-items:center;
+color:#484D77;  
+}
+
+.add-task-input-box-details .fa-chevron-left{
+font-size:18px; 
+margin-left:30px;
+cursor:pointer;
+}
+
+
+.add-task-input-box-details h3{
+position:absolute;
+left:50%;
+transform:translate(-50%,-50%);
+margin-top:50px;
+font-size:24px;
+}
+
+
+.add-task-input-box-details .fa-trash{
+position:absolute;
+right:35px;
+cursor:pointer;
+}
+
+.add-task-input-box .taskInput{
+all:unset;  
+height:80px;
+width:350px;
+padding:15px;
+padding-left:27px;
+color:#484D77;
+font-size:23px;
+font-weight:500;
+padding-bottom:0;
+caret-color:#6D45D9; 
+position:relative;
+}
+
+.add-task-input-box .taskInput::placeholder{
+color:#C0C0C0;  
+font-size:25px;
+}
+
+.add-task-input-box .no-of-characters{
+color:#d3d3d3;
+margin-left:27px;
+margin-top:5px;
+}
+
+.checked{
+text-decoration:line-through;        
+}
+
+.delete-message{
+height:50px;   
+width:93%;
+background:#323232;
+display:flex;
+align-items:center;
+padding-left:20px;
+border-radius:5px;
+color:white;
+position:fixed;
+bottom:-100px;
+left:50%;
+transform:translate(-50%,-50%);
+transition:all .2s;
+}
+
+.instruction-box .instruction-add-box{
+height:80px;        
+display:flex;
+align-items:center;
+}
+
+.instruction-box .instruction-add-box > i{
+margin-left:30px;        
+color:#484D77;  
+}
+
+.instruction-box .instruction-add-box > h3{
+margin-left:25px;        
+color:#484D77;  
+font-size:22px;
+}
+
+.instruction-box .logo{
+height:80px;   
+width:80px;
+background:#6D45D9;
+border-radius:100%;
+position:absolute;
+top:150px;
+left:50%;
+transform:translate(-50%,-50%);
+}
+
+.instruction-box .arrow{
+height:45px;  
+width:13px;
+border-top-left-radius:30px;
+border-top-right-radius:30px;
+background:white;
+transform:rotate(45deg);
+margin-top:20px;
+margin-left:40px;
+}
+
+.instruction-box .arrow::before{
+content:"";   
+height:30px;
+width:15px;
+background:lightgrey;
+border-top-left-radius:30px;
+border-top-right-radius:30px;
+position:absolute;
+transform:rotate(-90deg);
+margin-top:23px;
+margin-left:-10px
+}
+
+.instruction-box .app-version{
+color:#BDC5D0;  
+font-weight:400;
+position:absolute;
+top:220px;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:18px;
+}
+
+.instruction-box .how-label{
+color:#484D77;  
+margin-left:30px;
+position:relative;
+top:200px;
+font-size:28px;
+}
+
+.instruction-box .instruct-1,.instruction-box .instruct-2,.instruction-box .instruct-3{
+color:#C0C0C0;
+margin-left:30px;
+position:relative;
+top:213px;
+font-size:19px;
+font-weight:500;
+}
+
+.instruction-box .instruct-2{
+top:233px;      
+}
+
+.instruction-box .instruct-3{
+top:253px;        
+}
+
+.instruction-box .instagram-link{
+height:60px;
+width:100%;
+background:#F2F1F7;
+display:flex;
+align-items:center;
+position:relative;
+top:290px;
+cursor:pointer;
+}
+
+.instruction-box .instagram-link a{
+text-decoration:none;
+margin-left:30px;
+color:#484D77; 
+font-weight:600;
+font-size:19px;
+}
+
+::selection{
+background:rgba(109,69,217,0.3); 
+color:black;
+}
+</style>        
+</head>
+
+<body>
+<div class="menu-btn">
+ <i class="fa-solid fa-ellipsis"></i>      
+</div>        
+<h1 class="wishes">Hey, Good <br>Evening !</h1>  
+<h4 class="no-of-tasks">You have <span>0 tasks</span> to  complete</h4>
+<div class="allTasks">
+     <!--Insert All Tasks In The Box-->
+ </div>  
+<div class="delete-message">1 task deleted</div>
+<button class="addTaskBtn"><i class="fa-solid fa-plus"></i> Add a new task</button>
+
+<div class="add-task-input-box">
+     <div class="add-task-input-box-details">
+ <i class="fa-sharp fa-solid fa-chevron-left" id="task-add-arrow"></i> 
+  <h3>My Task</h3>
+  <i class="fa-sharp fa-solid fa-trash"></i>
+     </div>  
+ <textarea name="" id="" class="taskInput" placeholder="Type anything you want to do"></textarea>
+ <p class="no-of-characters">0 characters</p>
+</div>
+
+<div class="instruction-box">
+<div class="instruction-add-box">
+  <i class="fa-sharp fa-solid fa-chevron-left" id="instruction-close-arrow"></i> 
+  <h3>Settings</h3>
+</div>        
+    <div class="logo">
+        <div class="arrow"></div> 
+    </div>   
+    <p class="app-version">Nexdo 1.0</p>
+    <h3 class="how-label">How to use Nexdo ?</h3>
+    <p class="instruct-1">Click 'Add a new task' to add task.</p>
+    <p class="instruct-2">Long Tab task item to delete.</p>
+    <p class="instruct-3">Tick item to complete.</p>
+    <div class="instagram-link">
+   <a href="https://instagram.com/codewithharsh_?igshid=YmMyMTA2M2Y=">Follow me on instagram</a>         
+    </div>
+</div>
+<script src="Todo.js"></script>
+<script>
+let taskInput = document.querySelector('.add-task-input-box .taskInput');
+let no_of_characters = document.querySelector('.add-task-input-box .no-of-characters');
+let clear_input_btn = document.querySelector('.add-task-input-box-details .fa-trash');
+let arrowLeft = document.querySelector('#task-add-arrow');
+let wishMessage = document.querySelector('.wishes');
+
+let todos = JSON.parse(localStorage.getItem('todo-list'));
+let deleteMessage = document.querySelector('.delete-message');
+let close_arrow = document.querySelector('#instruction-close-arrow');
+let instruction_open_btn = document.querySelector('.menu-btn');
+let toggleBtn = document.querySelector('.toggle-box');
+
+let editId;
+let isEdited = false;
+
+taskInput.addEventListener('keyup',autoInputHeight);
+
+function autoInputHeight(e){
+ this.style.height = '30px';
+ let height = e.target.scrollHeight;
+ taskInput.style.height = `${height}px`;
+ 
+ no_of_characters.innerHTML = taskInput.value.length + ' characters';
+}
+
+
+clear_input_btn.addEventListener('click',()=>{
+  taskInput.value = '';
+  no_of_characters.innerHTML = taskInput.value.length + ' characters';
+});
+
+
+document.querySelector('.addTaskBtn').addEventListener('click',()=>{
+document.querySelector('.add-task-input-box').style.right = '0px';   
+taskInput.focus();
+});
+
+let showTodos =()=>{
+let li = '';     
+if(todos){
+todos.forEach((todo,id)=>{
+let isCompleted = todo.status == "completed" ? "checked" : "";
+let filtTask = todo.name.replaceAll("\n", '<br/>');        
+ li += `<div class="task" onclick="editTask(${id},'${filtTask}')" onmousedown="callFunc(${id})" onmouseup="clearFunc()" onmouseout="clearFunc()" ontouchstart="callFunc(${id})" ontouchend="clearFunc()">
+  <input type="checkbox" name="" id="${id}" class="checkbox" onclick="check(this);event.stopPropagation()" ${isCompleted}>
+  <div class="userTask">
+      <span class="${isCompleted}">${todo.name}</span>
+  </div>
+ </div>`;      
+})      
+}  
+document.querySelector('.allTasks').innerHTML = li || `<div class="no-task-message">
+           <i class="fa-solid fa-list-check"></i>  
+           <h4>Get yourself pumped up</h4>
+           <p>Anything to add?</p>
+        </div>`;
+let divList = document.querySelectorAll('.allTasks .task').length;
+document.querySelector('.no-of-tasks').innerHTML = `You have <span>${divList} tasks</span> to complete`;
+}
+
+
+arrowLeft.addEventListener('click',()=>{
+document.querySelector('.add-task-input-box').style.right = '-100%';
+no_of_characters.innerHTML = taskInput.value.length + ' characters';
+let userTask = taskInput.value.trim();
+if(userTask != ''){
+if(!isEdited){       
+if(!todos){
+ todos = [];     
+} 
+let taskInfo = { name: userTask, status: "pending" };
+todos.push(taskInfo);
+}else{
+ todos[editId].name = userTask;  
+ isEdited = false;
+}
+taskInput.value = '';
+localStorage.setItem('todo-list',JSON.stringify(todos));
+showTodos();
+randomColorCheckboxes();
+}
+})
+
+let deleteNote =(deleteId)=>{
+todos.splice(deleteId,1);
+localStorage.setItem('todo-list',JSON.stringify(todos));
+showTodos();
+randomColorCheckboxes();
+}
+
+let date = new Date();
+let hours = date.getHours();
+let minute = date.getMinutes();
+
+if(hours < 12){
+  wishMessage.innerHTML = `Hey, Good <br>Morning !`;   
+}else if(hours < 16){
+  wishMessage.innerHTML = `Hey, Good <br>Afternoon !`;   
+}else if(hours < 20){
+  wishMessage.innerHTML = `Hey, Good <br>Evening !`;   
+}else if(hours < 24){
+  wishMessage.innerHTML = `Good Night <br>Friend !`;   
+}
+
+let randomColorCheckboxes =()=>{
+var colors = ['red', 'blue', 'green', 'teal', 'rosybrown', 'tan', 'plum', 'saddlebrown'];
+var checkboxes = document.querySelectorAll(".task .checkbox");
+
+for (i = 0; i < checkboxes.length; i++) {
+        // Pick a random color from the array 'colors'.
+let randomColor = colors[Math.floor(Math.random() * colors.length)];  
+if(checkboxes[i].checked){
+  checkboxes[i].style.border = '2px solid #6D45D9';  
+}else{
+ checkboxes[i].style.border = `2px solid ${randomColor}`;       
+}
+}        
+}
+
+function check(currentBox){
+var colors = ['red', 'blue', 'green', 'teal', 'rosybrown', 'tan', 'plum', 'saddlebrown'];
+let randomBorderColor = colors[Math.floor(Math.random() * colors.length)];      
+let taskName = currentBox.nextElementSibling.children[0];
+if(currentBox.checked){
+ taskName.classList.add("checked");
+ todos[currentBox.id].status = "completed";
+ currentBox.style.border = "2px solid #6D45D9"
+}else{
+ taskName.classList.remove("checked");
+ todos[currentBox.id].status = "pending";
+ currentBox.style.border = `2px solid ${randomBorderColor}`;
+}
+localStorage.setItem('todo-list',JSON.stringify(todos));
+}
+
+let editTask =(taskId,taskName)=>{
+let task = taskName.replaceAll('<br/>', '\r\n');      
+//console.log(taskId,taskName)
+document.querySelector('.add-task-input-box').style.right = '0px';   
+taskInput.focus();
+editId = taskId;
+isEdited = true;
+taskInput.value = task;
+}
+
+
+let longPress;
+let callFunc =(deleteId)=>{
+ longPress = setTimeout(()=>{
+   todos.splice(deleteId,1);
+   localStorage.setItem('todo-list',JSON.stringify(todos));
+   showTodos();
+   deleteMessage.style.bottom = "65px";
+   setTimeout(()=>{
+deleteMessage.style.bottom = "-100px";
+   },1500)
+randomColorCheckboxes();
+ },500)  
+}
+
+let clearFunc =()=>{
+  clearInterval(longPress)      
+}
+
+instruction_open_btn.addEventListener('click',()=>{
+ document.querySelector('.instruction-box').style.right = '0px';
+})
+
+close_arrow.addEventListener('click',()=>{
+ document.querySelector('.instruction-box').style.right = '-100%';
+})
+
+/*toggleBtn.addEventListener('click',()=>{
+document.body.classList.toggle('background-dark');
+let box_dark = document.querySelectorAll('.task');
+for(let i=0;i<box_dark.length;i++){
+ box_dark[i].classList.toggle('box-dark');  
+}
+document.querySelector('.instruction-box').classList.toggle('instruction-dark');
+document.querySelector('.wishes').classList.toggle('wish-dark');
+document.querySelector('.add-task-input-box').classList.toggle('task-input-box-dark')
+});*/
+
+showTodos();
+randomColorCheckboxes();
+</script>
+</body>
+
+</html>
